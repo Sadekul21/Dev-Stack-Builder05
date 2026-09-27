@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { TechCard } from './components/TechCard';
+import { YourStack } from './components/YourStack';
 import type { Technology } from './types/tech';
 
 export const App: React.FC = () => {
   const [technologies, setTechnologies] = useState<Technology[]>([]);
+  const [stack, setStack] = useState<Technology[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -16,13 +18,23 @@ export const App: React.FC = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.error('Data load error:', err);
+        console.error(err);
         setLoading(false);
       });
   }, []);
 
   const handleAddToStack = (tech: Technology) => {
-    console.log('Selected tech:', tech);
+    if (!stack.some((item) => item.id === tech.id)) {
+      setStack((prev) => [...prev, tech]);
+    }
+  };
+
+  const handleRemoveFromStack = (id: string) => {
+    setStack((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleRemoveAll = () => {
+    setStack([]);
   };
 
   return (
@@ -43,18 +55,27 @@ export const App: React.FC = () => {
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <span className="loading loading-spinner loading-lg text-pink-500"></span>
-            <p className="ml-3 font-semibold text-gray-600">Loading Technologies...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {technologies.map((tech) => (
-              <TechCard
-                key={tech.id}
-                tech={tech}
-                isAdded={false}
-                onAddToStack={handleAddToStack}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {technologies.map((tech) => (
+                <TechCard
+                  key={tech.id}
+                  tech={tech}
+                  isAdded={stack.some((item) => item.id === tech.id)}
+                  onAddToStack={handleAddToStack}
+                />
+              ))}
+            </div>
+
+            <div className="lg:col-span-1">
+              <YourStack
+                stack={stack}
+                onRemoveFromStack={handleRemoveFromStack}
+                onRemoveAll={handleRemoveAll}
               />
-            ))}
+            </div>
           </div>
         )}
       </main>
