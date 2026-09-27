@@ -1,5 +1,4 @@
 import React from 'react';
-// Direct banner-stack.png import kora hocche
 import bannerImg from '../assets/banner-stack.png';
 
 export const Hero: React.FC = () => {

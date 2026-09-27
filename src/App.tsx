@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { TechCard } from './components/TechCard';
 import { YourStack } from './components/YourStack';
+import { Footer } from './components/Footer';
 import type { Technology } from './types/tech';
 
 export const App: React.FC = () => {
@@ -19,26 +23,34 @@ export const App: React.FC = () => {
       })
       .catch((err) => {
         console.error(err);
+        toast.error('Failed to load technologies data.');
         setLoading(false);
       });
   }, []);
 
   const handleAddToStack = (tech: Technology) => {
-    if (!stack.some((item) => item.id === tech.id)) {
-      setStack((prev) => [...prev, tech]);
+    if (stack.some((item) => item.id === tech.id)) {
+      toast.warning(`${tech.name} is already in your stack!`);
+      return;
     }
+    setStack((prev) => [...prev, tech]);
+    toast.success(`Added ${tech.name} to your stack!`);
   };
 
   const handleRemoveFromStack = (id: string) => {
-    setStack((prev) => prev.filter((item) => item.id !== id));
+    const item = stack.find((i) => i.id === id);
+    setStack((prev) => prev.filter((i) => i.id !== id));
+    if (item) toast.info(`Removed ${item.name} from stack.`);
   };
 
   const handleRemoveAll = () => {
     setStack([]);
+    toast.warn('Cleared all technologies from your stack.');
   };
 
   return (
     <div className="min-h-screen bg-[#fafafa] font-sans text-gray-800">
+      <ToastContainer position="top-right" autoClose={2000} />
       <Navbar />
       <Hero />
 
@@ -55,6 +67,7 @@ export const App: React.FC = () => {
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <span className="loading loading-spinner loading-lg text-pink-500"></span>
+            <p className="ml-3 font-semibold text-gray-600">Loading Technologies...</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -79,6 +92,8 @@ export const App: React.FC = () => {
           </div>
         )}
       </main>
+
+      <Footer />
     </div>
   );
 };
