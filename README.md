@@ -14,7 +14,7 @@ A simple and interactive React application for exploring, selecting, and managin
 
 ## 📸 Project Preview
 
-![Dev Stack Builder Preview](./src/assets/preview.png)
+![Dev Stack Builder Preview](./devstack/src/assets/preview.png)
 
 ---
 
