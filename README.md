@@ -14,9 +14,7 @@ A simple and interactive React application for exploring, selecting, and managin
 
 ## 📸 Project Preview
 
-![Dev Stack Builder Preview](<img width="945" height="435" alt="preview" src="https://github.com/user-attachments/assets/d2f1b3c5-215c-40de-995d-d93954160b4d" />
-)
-
+<img width="945" height="435" alt="Image" src="https://github.com/user-attachments/assets/d3281cff-6e17-4637-ac25-d5610d925935" />
 ---
 
 ## 📖 About the Project
